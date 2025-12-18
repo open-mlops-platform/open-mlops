@@ -4,6 +4,8 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "Open MLOps Platform",
   description: "A VitePress Site",
+  // Ensure assets resolve correctly on GitHub Pages (project pages)
+  base: "/open-mlops/",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
