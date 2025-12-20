@@ -4,8 +4,8 @@
 
 
 ::: info
-- 必ずrootフォルダが存在する。共通するペアレントではnameは一意である必要がある。
-- `__open_mlops_internal_root_folder__`と同一名のフォルダはユーザーは作成できない。
+- 常に root フォルダが存在する。同一の親フォルダ配下では `name` は一意である必要がある。
+- ユーザーは `__open_mlops_internal_root_folder__` と同名のフォルダを作成できない。
 :::
 
 ```json
@@ -23,10 +23,10 @@
 | parameter | type | default | rule |
 | - | - | - | - |
 | `id` | record | レコード作成時に自動決定 | - |
-| `name` | string | クエリ時決定 | base64エンコード必須。非asciiは許容しない。 |
-| `parent-folder` | record | `:id_root_folder` | base64エンコード必須。非asciiは許容しない。 |
-| `metadata.created-at` | datetime | フォルダ作成時点 | `time::now()`を用いること。 |
-| `metadata.update-at` | datetime | フォルダ作成時点 | フォルダ内部のコンテンツに変化があった場合、時刻を更新する。ただし時刻の更新は保証されない。`time::now()`を用いること。 |
+| `name` | string | クエリ時決定 | Base64 エンコード必須。ASCII 以外の文字は許容しない。 |
+| `parent-folder` | record | `:id_root_folder` | Base64 エンコード必須。ASCII 以外の文字は許容しない。 |
+| `metadata.created-at` | datetime | フォルダ作成時点 | `time::now()` を用いること。 |
+| `metadata.update-at` | datetime | フォルダ作成時点 | フォルダ内の内容に変更があった場合は時刻を更新する（ただし更新が保証されるわけではない）。`time::now()` を用いること。 |
 
 
 
@@ -34,7 +34,7 @@
 
 ### 概要
 
-S3互換のオブジェクトストレージに保存されたデータの実態を管理する。
+S3 互換オブジェクトストレージに保存されたデータの実体を管理する。
 
 ### スキーマ
 
@@ -65,23 +65,23 @@ S3互換のオブジェクトストレージに保存されたデータの実態
 | parameter | type | default | rule |
 | - | - | - | - |
 | `id` | record | レコード作成時に自動決定 | - |
-| `name` | string | アップロード時に決定 | base64エンコード必須。非asciiは許容しない。 |
+| `name` | string | アップロード時に決定 | Base64 エンコード必須。ASCII 以外の文字は許容しない。 |
 | `uri` | string | アップロード時に決定 | `bucket-name:/full/path` |
 | `folder` | record | アップロード時に決定 | 所属するフォルダのレコード |
-| `metadata.created-at` | datetime | アップロード開始時の時刻 | `time::now()`を用いること。 |
-| `metadata.update-at` | datetime | ステート更新時刻 | レコードのステートを変更する場合は必ず時刻を更新する。`time::now()`を用いること。 |
-| `metadata.file-type` | string | `unknown` | `video`, `image`のいずれか。 |
+| `metadata.created-at` | datetime | アップロード開始時の時刻 | `time::now()` を用いること。 |
+| `metadata.update-at` | datetime | 状態更新時刻 | レコードの状態を変更する場合は、必ず時刻を更新する。`time::now()` を用いること。 |
+| `metadata.file-type` | string | `unknown` | `video`, `image` のいずれか。 |
 | `metadata.size-byte` | int | アップロード時に決定 | ファイルサイズ。接頭辞なしのバイト単位。 |
-| `flags.upload-wip` | bool | `false` | S3にアップロード中の場合には`true`にする。アップロードが完了次第このフラグを`false`にする。 |
-| `flags.upload-complete` | bool | `false` | S3にアップロードが完了した場合は`true`にする。それ以外の状態では`false`にする。他の`upload-wip`の状態に関わらず、`flags.upload-complete`が``true`である場合は完了とみなす。 |
-| `flags.upload-fail` | bool | `false` | S3にアップロードが失敗した場合は`true`にする。それ以外の状態では`false`にする。他の`upload-*`の状態に関わらず、`flags.upload-fail`が``true`である場合は失敗とみなす。 |
-| `kill-request` | bool | `false` | ファイル削除リクエスト。このフラグが`true`の時は順次S3から削除される。 |
-| `kill-wip` | bool | `false` | ファイル削除リクエストが進行中の時は`true`になる。`kill-request`の状態に関わらずこのフラグが`true`の場合、削除が進行中であると見なす。 |
-| `kill-complete` | bool | `false` | このフラグはS3オブジェクトが完全に削除された時に`true`になる。このフラグが`true`の時は順次このレコードも削除される。 他の`kill-*`フラグの状態に関わらずこのフラグが`true`の場合、S3オブジェクトが完全に削除されたと見なす。|
-| `additional-information` | record | none | ファイルタイプに応じてステートや追加のメタ情報が保存されたレコードへのリンクが記述される。 |
+| `flags.upload-wip` | bool | `false` | S3 にアップロード中は `true` にする。完了したら `false` に戻す。 |
+| `flags.upload-complete` | bool | `false` | S3 へのアップロードが完了したら `true` にする。それ以外は `false` にする。`flags.upload-complete` が `true` の場合は、他の `upload-*` の状態に関わらず完了とみなす。 |
+| `flags.upload-fail` | bool | `false` | S3 へのアップロードが失敗したら `true` にする。それ以外は `false` にする。`flags.upload-fail` が `true` の場合は、他の `upload-*` の状態に関わらず失敗とみなす。 |
+| `kill-request` | bool | `false` | ファイル削除リクエスト。`true` の場合、順次 S3 から削除される。 |
+| `kill-wip` | bool | `false` | 削除リクエストの処理中は `true` になる。`kill-request` の値に関わらず、このフラグが `true` の間は削除処理中とみなす。 |
+| `kill-complete` | bool | `false` | S3 オブジェクトが完全に削除されたら `true` になる。`true` の場合、順次このレコードも削除される。`kill-*` フラグの状態に関わらず、このフラグが `true` なら削除完了とみなす。 |
+| `additional-information` | record | none | ファイル種別に応じた状態や追加メタ情報を保持するレコードへのリンクを格納する。 |
 
 ## adi_video_db
-`additional-information-database`のVideoバージョン
+`additional-information-database` の Video 版
 
 ```json
 {
@@ -105,7 +105,7 @@ S3互換のオブジェクトストレージに保存されたデータの実態
 ```
 
 ## adi_image_db
-`additional-information-database`のImageバージョン
+`additional-information-database` の Image 版
 
 ```json
 {
