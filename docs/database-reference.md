@@ -58,7 +58,7 @@ S3互換のオブジェクトストレージに保存されたデータの実態
         "kill-wip": "bool",
         "kill-complete": "bool"
     },
-    "additional-infomation": "record"
+    "additional-information": "record"
 }
 ```
 
@@ -77,16 +77,16 @@ S3互換のオブジェクトストレージに保存されたデータの実態
 | `flags.upload-fail` | bool | `false` | S3にアップロードが失敗した場合は`true`にする。それ以外の状態では`false`にする。他の`upload-*`の状態に関わらず、`flags.upload-fail`が``true`である場合は失敗とみなす。 |
 | `kill-request` | bool | `false` | ファイル削除リクエスト。このフラグが`true`の時は順次S3から削除される。 |
 | `kill-wip` | bool | `false` | ファイル削除リクエストが進行中の時は`true`になる。`kill-request`の状態に関わらずこのフラグが`true`の場合、削除が進行中であると見なす。 |
-| `kill-complete` | bool | `false` | このフラグはS3オブジェクトが完全に削除された時に`true`になる。このフラグが`true`の時は順次このレコードも削除される。 他の`kill-*`フラグの状態に関わらずこのフラグが`true`の場合、3Sオブジェクトが完全に削除されたと見なす。|
-| `additional-infomation` | record | none | ファイルタイプに応じてステートや追加のメタ情報が保存されたレコードへのリンクが記述される。 |
+| `kill-complete` | bool | `false` | このフラグはS3オブジェクトが完全に削除された時に`true`になる。このフラグが`true`の時は順次このレコードも削除される。 他の`kill-*`フラグの状態に関わらずこのフラグが`true`の場合、S3オブジェクトが完全に削除されたと見なす。|
+| `additional-information` | record | none | ファイルタイプに応じてステートや追加のメタ情報が保存されたレコードへのリンクが記述される。 |
 
 ## adi_video_db
-`additional-infomation-database`のVideoバージョン
+`additional-information-database`のVideoバージョン
 
 ```json
 {
     "id": "record",
-    "samnil-uri": "string",
+    "thumbnail-uri": "string",
     "hls": "record",
     "hls-encode-state": {
         "queued": "bool",
@@ -95,7 +95,7 @@ S3互換のオブジェクトストレージに保存されたデータの実態
     },
     "encoded-video-uri": "string",
     "metadata": {
-        "lenght-sec": "float",
+        "length-sec": "float",
         "avg-fps": "float",
         "frame-count": "int",
         "height-px": "int",
@@ -105,7 +105,7 @@ S3互換のオブジェクトストレージに保存されたデータの実態
 ```
 
 ## adi_image_db
-`additional-infomation-database`のImageバージョン
+`additional-information-database`のImageバージョン
 
 ```json
 {
