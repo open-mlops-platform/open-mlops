@@ -116,12 +116,19 @@ S3 互換オブジェクトストレージに保存されたデータの実体�
     "id": "record",
     "thumbnail-uri": "string",
     "hls": "record",
-    "hls-encode-state": {
-        "state": "string",
-        "wip-start-at": "datetime",
-        "state-update-at": "datetime",
-    },
     "encoded-video-uri": "string",
+    "states": {
+        "hls-encode-state": {
+            "state": "string",
+            "wip-start-at": "datetime",
+            "state-update-at": "datetime",
+        },
+        "metadata-create-state": {
+            "state": "string",
+            "wip-start-at": "datetime",
+            "state-update-at": "datetime",
+        },
+    },
     "metadata": {
         "length-sec": "float",
         "avg-fps": "float",
@@ -137,9 +144,12 @@ S3 互換オブジェクトストレージに保存されたデータの実体�
 | `id` | record | レコード作成時に自動決定 | - |
 | `thumbnail-uri` | string | エンコード完了時に決定 | サムネイルの保存先。 |
 | `hls` | record | エンコード完了時に決定 | HLS の出力情報レコード。 |
-| `hls-encode-state.state` | string | `none` | HLS 生成のステート変化を記録する。`none` -> `requested` -> `wip` -> `complete`の一方向でステートが変化する。すべての状態から`failed`に変化することができる。 |
-| `hls-encode-state.wip-start-at` | datetime | empty | `requested` -> `wip`にステートが変化した時刻を記録。`time::now()` を用いること。 |
-| `hls-encode-state.state-update-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
+| `states.hls-encode-state.state` | string | `none` | HLS 生成のステート変化を記録する。`none` -> `requested` -> `wip` -> `complete`の一方向でステートが変化する。すべての状態から`failed`に変化することができる。 |
+| `states.hls-encode-state.wip-start-at` | datetime | empty | `requested` -> `wip`にステートが変化した時刻を記録。`time::now()` を用いること。 |
+| `states.hls-encode-state.state-update-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
+| `states.metadata-create-state.state` | string | `none` | メタデータ作成のステート変化を記録する。`none` -> `requested` -> `wip` -> `complete`の一方向でステートが変化する。すべての状態から`failed`に変化することができる。 |
+| `states.metadata-create-state.wip-start-at` | datetime | empty | `requested` -> `wip`にステートが変化した時刻を記録。`time::now()` を用いること。 |
+| `states.metadata-create-state.state-update-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
 | `encoded-video-uri` | string | エンコード完了時に決定 | エンコード済み動画の保存先。 |
 | `metadata.length-sec` | float | 解析完了時に決定 | 動画長（秒）。 |
 | `metadata.avg-fps` | float | 解析完了時に決定 | 平均 FPS。 |
@@ -154,10 +164,17 @@ S3 互換オブジェクトストレージに保存されたデータの実体�
 {
     "id": "record",
     "webp-uri": "string",
-    "webp-encode-state": {
-        "state": "string",
-        "wip-start-at": "datetime",
-        "state-update-at": "datetime",
+    "states": {
+        "webp-encode-state": {
+            "state": "string",
+            "wip-start-at": "datetime",
+            "state-update-at": "datetime",
+        },
+        "metadata-create-state": {
+            "state": "string",
+            "wip-start-at": "datetime",
+            "state-update-at": "datetime",
+        },
     },
     "metadata": {
         "height-px": "int",
@@ -170,9 +187,12 @@ S3 互換オブジェクトストレージに保存されたデータの実体�
 | - | - | - | - |
 | `id` | record | レコード作成時に自動決定 | - |
 | `webp-uri` | string | エンコード完了時に決定 | WebP の保存先。 |
-| `webp-encode-state.state` | string | `none` | WebP 生成のステート変化を記録する。`none` -> `requested` -> `wip` -> `complete`の一方向でステートが変化する。すべての状態から`failed`に変化することができる。 |
-| `webp-encode-state.wip-start-at` | datetime | empty | `requested` -> `wip`にステートが変化した時刻を記録。`time::now()` を用いること。 |
-| `webp-encode-state.state-update-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
+| `states.webp-encode-state.state` | string | `none` | WebP 生成のステート変化を記録する。`none` -> `requested` -> `wip` -> `complete`の一方向でステートが変化する。すべての状態から`failed`に変化することができる。 |
+| `states.webp-encode-state.wip-start-at` | datetime | empty | `requested` -> `wip`にステートが変化した時刻を記録。`time::now()` を用いること。 |
+| `states.webp-encode-state.state-update-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
+| `states.metadata-create-state.state` | string | `none` | メタデータ作成のステート変化を記録する。`none` -> `requested` -> `wip` -> `complete`の一方向でステートが変化する。すべての状態から`failed`に変化することができる。 |
+| `states.metadata-create-state.wip-start-at` | datetime | empty | `requested` -> `wip`にステートが変化した時刻を記録。`time::now()` を用いること。 |
+| `states.metadata-create-state.state-update-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
 | `metadata.height-px` | int | 解析完了時に決定 | 高さ（px）。 |
 | `metadata.width-px` | int | 解析完了時に決定 | 幅（px）。 |
 
