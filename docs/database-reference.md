@@ -18,7 +18,14 @@
     "metadata": {
         "created-at": "datetime",
         "update-at": "datetime",
-    }
+    },
+    "states": {
+        "kill-state": {
+            "state": "string",
+            "wip-start-at": "datetime",
+            "state-update-at": "datetime",
+        }
+    },
 }
 ```
 
@@ -29,6 +36,9 @@
 | `parent-folder` | record | `:id_root_folder` | - |
 | `metadata.created-at` | datetime | フォルダ作成時点 | `time::now()` を用いること。 |
 | `metadata.update-at` | datetime | フォルダ作成時点 | フォルダ内の内容に変更があった場合は時刻を更新する（ただし更新が保証されるわけではない）。`time::now()` を用いること。 |
+| `states.kill-state.state` | string | `none` | ファイル削除リクエストのステート変化を記録する。`none` -> `requested` -> `wip` -> `complete`の一方向でステートが変化する。すべての状態から`failed`に変化することができる。 |
+| `states.kill-state.wip-start-at` | string | empty | `requested` -> `wip`にステートが変化した時刻を記録。`time::now()` を用いること。 |
+| `states.kill-state.update-at` | string | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
 
 ### ルートフォルダ
 
@@ -107,9 +117,9 @@ S3 互換オブジェクトストレージに保存されたデータの実体�
     "thumbnail-uri": "string",
     "hls": "record",
     "hls-encode-state": {
-        "queued": "bool",
-        "wip": "bool",
-        "complete": "bool"
+        "state": "string",
+        "wip-start-at": "datetime",
+        "state-update-at": "datetime",
     },
     "encoded-video-uri": "string",
     "metadata": {
@@ -130,9 +140,9 @@ S3 互換オブジェクトストレージに保存されたデータの実体�
     "id": "record",
     "webp-uri": "string",
     "webp-encode-state": {
-        "queued": "bool",
-        "wip": "bool",
-        "complete": "bool"
+        "state": "string",
+        "wip-start-at": "datetime",
+        "state-update-at": "datetime",
     },
     "metadata": {
         "height-px": "int",
