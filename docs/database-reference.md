@@ -17,13 +17,13 @@
     "parent-folder": "record",    
     "metadata": {
         "created-at": "datetime",
-        "update-at": "datetime",
+        "updated-at": "datetime",
     },
     "states": {
         "kill-state": {
             "state": "string",
             "wip-start-at": "datetime",
-            "state-update-at": "datetime",
+            "state-updated-at": "datetime",
         }
     },
 }
@@ -35,10 +35,10 @@
 | `name` | string | クエリ時決定 |  登録の際は、必ず正規化を行う |
 | `parent-folder` | record | `:id_root_folder` | - |
 | `metadata.created-at` | datetime | フォルダ作成時点 | `time::now()` を用いること。 |
-| `metadata.update-at` | datetime | フォルダ作成時点 | フォルダ内の内容に変更があった場合は時刻を更新する（ただし更新が保証されるわけではない）。`time::now()` を用いること。 |
+| `metadata.updated-at` | datetime | フォルダ作成時点 | フォルダ内の内容に変更があった場合は時刻を更新する（ただし更新が保証されるわけではない）。`time::now()` を用いること。 |
 | `states.kill-state.state` | string | `none` | ファイル削除リクエストのステート変化を記録する。`none` -> `requested` -> `wip` -> `complete`の一方向でステートが変化する。すべての状態から`failed`に変化することができる。 |
 | `states.kill-state.wip-start-at` | datetime | empty | `requested` -> `wip`にステートが変化した時刻を記録。`time::now()` を用いること。 |
-| `states.kill-state.state-update-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
+| `states.kill-state.state-updated-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
 
 ### ルートフォルダ
 
@@ -49,7 +49,7 @@
     "parent-folder": "null",    
     "metadata": {
         "created-at": "null",
-        "update-at": "null",
+        "updated-at": "null",
     }
 }
 ```
@@ -78,12 +78,12 @@ S3 互換オブジェクトストレージに保存されたデータの実体�
         "kill-state": {
             "state": "string",
             "wip-start-at": "datetime",
-            "state-update-at": "datetime",
+            "state-updated-at": "datetime",
         },
         "upload-state": {
             "state": "string",
             "wip-start-at": "datetime",
-            "state-update-at": "datetime",
+            "state-updated-at": "datetime",
         }
     },
     "additional-information": "record"
@@ -102,10 +102,10 @@ S3 互換オブジェクトストレージに保存されたデータの実体�
 | `metadata.file-size-byte` | int | アップロード時に決定 | ファイルサイズ。接頭辞なしのバイト単位。 |
 | `states.kill-state.state` | string | `none` | ファイル削除リクエストのステート変化を記録する。`none` -> `requested` -> `wip` -> `complete`の一方向でステートが変化する。すべての状態から`failed`に変化することができる。 |
 | `states.kill-state.wip-start-at` | datetime | empty | `requested` -> `wip`にステートが変化した時刻を記録。`time::now()` を用いること。 |
-| `states.kill-state.state-update-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
+| `states.kill-state.state-updated-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
 | `states.upload-state.state` | string | `none` | ファイルアップロードのステート変化を記録する。`none` -> `requested` -> `wip` -> `complete`の一方向でステートが変化する。すべての状態から`failed`に変化することができる。 |
 | `states.upload-state.wip-start-at` | datetime | empty | `requested` -> `wip`にステートが変化した時刻を記録。`time::now()` を用いること。 |
-| `states.upload-state.state-update-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
+| `states.upload-state.state-updated-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
 | `additional-information` | record | none | ファイル種別に応じた状態や追加メタ情報を保持するレコードへのリンクを格納する。 |
 
 ## adi_video_db
@@ -121,12 +121,12 @@ S3 互換オブジェクトストレージに保存されたデータの実体�
         "hls-encode-state": {
             "state": "string",
             "wip-start-at": "datetime",
-            "state-update-at": "datetime",
+            "state-updated-at": "datetime",
         },
         "metadata-create-state": {
             "state": "string",
             "wip-start-at": "datetime",
-            "state-update-at": "datetime",
+            "state-updated-at": "datetime",
         },
     },
     "metadata": {
@@ -146,10 +146,10 @@ S3 互換オブジェクトストレージに保存されたデータの実体�
 | `hls` | record | エンコード完了時に決定 | HLS の出力情報レコード。 |
 | `states.hls-encode-state.state` | string | `none` | HLS 生成のステート変化を記録する。`none` -> `requested` -> `wip` -> `complete`の一方向でステートが変化する。すべての状態から`failed`に変化することができる。 |
 | `states.hls-encode-state.wip-start-at` | datetime | empty | `requested` -> `wip`にステートが変化した時刻を記録。`time::now()` を用いること。 |
-| `states.hls-encode-state.state-update-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
+| `states.hls-encode-state.state-updated-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
 | `states.metadata-create-state.state` | string | `none` | メタデータ作成のステート変化を記録する。`none` -> `requested` -> `wip` -> `complete`の一方向でステートが変化する。すべての状態から`failed`に変化することができる。 |
 | `states.metadata-create-state.wip-start-at` | datetime | empty | `requested` -> `wip`にステートが変化した時刻を記録。`time::now()` を用いること。 |
-| `states.metadata-create-state.state-update-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
+| `states.metadata-create-state.state-updated-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
 | `encoded-video-uri` | string | エンコード完了時に決定 | エンコード済み動画の保存先。 |
 | `metadata.length-sec` | float | 解析完了時に決定 | 動画長（秒）。 |
 | `metadata.avg-fps` | float | 解析完了時に決定 | 平均 FPS。 |
@@ -168,12 +168,12 @@ S3 互換オブジェクトストレージに保存されたデータの実体�
         "webp-encode-state": {
             "state": "string",
             "wip-start-at": "datetime",
-            "state-update-at": "datetime",
+            "state-updated-at": "datetime",
         },
         "metadata-create-state": {
             "state": "string",
             "wip-start-at": "datetime",
-            "state-update-at": "datetime",
+            "state-updated-at": "datetime",
         },
     },
     "metadata": {
@@ -189,10 +189,10 @@ S3 互換オブジェクトストレージに保存されたデータの実体�
 | `webp-uri` | string | エンコード完了時に決定 | WebP の保存先。 |
 | `states.webp-encode-state.state` | string | `none` | WebP 生成のステート変化を記録する。`none` -> `requested` -> `wip` -> `complete`の一方向でステートが変化する。すべての状態から`failed`に変化することができる。 |
 | `states.webp-encode-state.wip-start-at` | datetime | empty | `requested` -> `wip`にステートが変化した時刻を記録。`time::now()` を用いること。 |
-| `states.webp-encode-state.state-update-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
+| `states.webp-encode-state.state-updated-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
 | `states.metadata-create-state.state` | string | `none` | メタデータ作成のステート変化を記録する。`none` -> `requested` -> `wip` -> `complete`の一方向でステートが変化する。すべての状態から`failed`に変化することができる。 |
 | `states.metadata-create-state.wip-start-at` | datetime | empty | `requested` -> `wip`にステートが変化した時刻を記録。`time::now()` を用いること。 |
-| `states.metadata-create-state.state-update-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
+| `states.metadata-create-state.state-updated-at` | datetime | empty | ステートが変化した時刻を記録。`time::now()` を用いること。 |
 | `metadata.height-px` | int | 解析完了時に決定 | 高さ（px）。 |
 | `metadata.width-px` | int | 解析完了時に決定 | 幅（px）。 |
 
